@@ -1,6 +1,7 @@
 ﻿using InfectionVet.Models;
 using InfectionVet.Services;
 
+// Store all registered patients.
 List<Patient> patients = [];
 PatientService patientService = new PatientService();
 
