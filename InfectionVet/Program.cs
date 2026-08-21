@@ -3,6 +3,7 @@ using InfectionVet.Services;
 
 // Store all registered patients.
 List<Patient> patients = [];
+Dictionary<int, Patient> patientDictionary = [];
 PatientService patientService = new PatientService();
 
 bool running = true;
@@ -21,7 +22,7 @@ while (running)
     switch (option)
     {
         case "1":
-            patientService.RegisterPatient(patients);
+            patientService.RegisterPatient(patients, patientDictionary);
             break;
         
         case "2":

@@ -8,7 +8,7 @@ public class PatientService
     /// Registers a new patient and its owner.
     /// </summary>
     /// <param name="patients">Represents the patients' class as a list.</param>
-    public void RegisterPatient(List<Patient> patients)
+    public void RegisterPatient(List<Patient> patients, Dictionary<int, Patient> patientDictionary)
     {
         try
         {
@@ -84,7 +84,8 @@ public class PatientService
             };
 
             patients.Add(patient);
-
+            patientDictionary.Add(patient.Id, patient);
+            
             Console.WriteLine($"\nPatient registered successfully.");
         }
         catch (FormatException)
@@ -130,5 +131,16 @@ public class PatientService
         }
         
         Console.WriteLine($"ID: {patient.Id} | Name: {patient.Name} |  Age: {patient.Age} | Symptom: {patient.Symptom} |  Owner: {patient.Owner.Name} | Phone: {patient.Owner.Phone} | Address: {patient.Owner.Address}");
+    }
+
+    public void FindPatientById(Dictionary<int, Patient> patientDictionary, int id)
+    {
+        if (!patientDictionary.TryGetValue(id, out Patient? patient))
+        {
+            Console.WriteLine("Patient not found.");
+            return;
+        }
+        
+        Console.WriteLine($"ID: {patient.Id} | Name: {patient.Name} |  Age: {patient.Age} | Symptom: {patient.Symptom} | Owner: {patient.Owner.Name} | Phone: {patient.Owner.Phone}");
     }
 }
