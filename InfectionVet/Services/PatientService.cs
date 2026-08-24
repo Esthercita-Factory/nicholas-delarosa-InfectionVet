@@ -8,7 +8,9 @@ public class PatientService
     /// Registers a new patient and its owner.
     /// </summary>
     /// <param name="patients">Represents the patients' class as a list.</param>
-    public void RegisterPatient(List<Patient> patients, Dictionary<int, Patient> patientDictionary)
+    /// <param name="patientDictionary">Represents the patients' class as a dictio</param>
+    /// <param name="id"></param>
+    public void RegisterPatient(List<Patient> patients, Dictionary<int, Patient> patientDictionary, int id)
     {
         try
         {
@@ -76,7 +78,7 @@ public class PatientService
 
             Patient patient = new Patient
             {
-                Id = patients.Count + 1,
+                Id = id,
                 Name = name,
                 Age = age,
                 Symptom = symptom,
@@ -142,5 +144,71 @@ public class PatientService
         }
         
         Console.WriteLine($"ID: {patient.Id} | Name: {patient.Name} |  Age: {patient.Age} | Symptom: {patient.Symptom} | Owner: {patient.Owner.Name} | Phone: {patient.Owner.Phone}");
+    }
+
+    /// <summary>
+    /// Updates the information of an existing patient.
+    /// </summary>
+    /// <param name="patientDictionary"></param>
+    /// <param name="id"></param>
+    public void UpdatePatient(Dictionary<int, Patient> patientDictionary, int id)
+    {
+        if (!patientDictionary.TryGetValue(id, out Patient? patient))
+        {
+            Console.WriteLine("Patient not found.");
+            return;
+        }
+        
+        Console.Write("Enter new patient name: ");
+        string name = Console.ReadLine() ?? "";
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            Console.WriteLine("Patient name cannot be empty.");
+            return;
+        }
+        
+        Console.Write("Enter new patient age: ");
+
+        if (!int.TryParse(Console.ReadLine(), out int age) || age <= 0)
+        {
+            Console.WriteLine("Invalid age.");
+            return;
+        }
+        
+        Console.Write("Enter new symptom: ");
+        string symptom = Console.ReadLine() ?? "";
+
+        if (string.IsNullOrWhiteSpace(symptom))
+        {
+            Console.WriteLine("Symptom cannot be empty.");
+            return;
+        }
+        
+        patient.Name = name;
+        patient.Age = age;
+        patient.Symptom = symptom;
+        
+        Console.WriteLine("Patient updated successfully.");
+    }
+
+    /// <summary>
+    /// Deletes a patient from the patient collection and dictionary.
+    /// </summary>
+    /// <param name="patients"></param>
+    /// <param name="patientDictionary"></param>
+    /// <param name="id"></param>
+    public void DeletePatient(List<Patient> patients, Dictionary<int, Patient> patientDictionary, int id)
+    {
+        if (!patientDictionary.TryGetValue(id, out Patient? patient))
+        {
+            Console.WriteLine("Patient not found.");
+            return;
+        }
+        
+        patientDictionary.Remove(id);
+        patients.Remove(patient);
+        
+        Console.WriteLine("Patient deleted successfully.");
     }
 }
