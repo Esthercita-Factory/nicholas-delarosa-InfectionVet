@@ -9,7 +9,7 @@ public class PatientService
     /// </summary>
     /// <param name="patients">Represents the patients' class as a list.</param>
     /// <param name="patientDictionary">Represents the patients' class as a dictionary</param>
-    /// <param name="id"></param>
+    /// <param name="id">The ID assigned to the new patient.</param>
     public void RegisterPatient(List<Patient> patients, Dictionary<int, Patient> patientDictionary, int id)
     {
         try
@@ -49,11 +49,6 @@ public class PatientService
                 Console.WriteLine("Species cannot be empty.");
                 return;
             }
-
-            int ownerId = patients
-                .Select(patient => patient.Owner.Id)
-                .DefaultIfEmpty(0)
-                .Max() + 1;
             
             Console.Write("Enter owner's name: ");
             string ownerName = Console.ReadLine() ?? "";
@@ -82,11 +77,30 @@ public class PatientService
                 return;
             }
 
-            Client owner = new Client(
-                ownerId,
-                ownerName,
-                ownerPhone,
-                ownerAddress);
+            Client? owner = patients
+                .Select(patient => patient.Owner)
+                .FirstOrDefault(client =>
+                    client.Name.Equals(
+                        ownerName,
+                        StringComparison.OrdinalIgnoreCase)
+                    &&
+                    client.Phone == ownerPhone
+                );
+
+            if (owner == null)
+            {
+                int ownerId = patients
+                    .Select(patient => patient.Owner.Id)
+                    .DefaultIfEmpty(0)
+                    .Max() + 1;
+                
+                owner = new Client(
+                    ownerId,
+                    ownerName,
+                    ownerPhone,
+                    ownerAddress
+                );
+            }
 
             Patient patient = new Patient(
                 id,
@@ -96,7 +110,9 @@ public class PatientService
                 species,
                 owner
             );
-
+            
+            owner.AddPatient(patient);
+            
             patients.Add(patient);
             patientDictionary.Add(patient.Id, patient);
             
@@ -119,8 +135,7 @@ public class PatientService
         {
             if (patient == null)
             {
-                Console.WriteLine(
-                    $"ID: {patient.Id} | Name: {patient.Name} |  Age: {patient.Age} | Symptom: {patient.Symptom} | Species: {patient.Species} | Owner: Not registered.");
+                Console.WriteLine("Invalid patient record.");
                 continue;
             }
             Console.WriteLine($"ID: {patient.Id} | Name: {patient.Name} |  Age: {patient.Age} | Symptom: {patient.Symptom} | Species: {patient.Species} | Owner: {patient.Owner.Name} | Phone: {patient.Owner.Phone}");

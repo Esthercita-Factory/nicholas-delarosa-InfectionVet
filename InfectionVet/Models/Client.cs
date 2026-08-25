@@ -14,6 +14,11 @@ public class Client
     public string Address { get; set; }
 
     /// <summary>
+    /// Contains all patients owned by this client.
+    /// </summary>
+    public List<Patient> Patients { get; } = new();
+
+    /// <summary>
     /// Initializes a new client with the required information.
     /// </summary>
     /// <param name="id"></param>
@@ -30,6 +35,34 @@ public class Client
         Name = name;
         Phone = phone;
         Address = address;
+    }
+
+    /// <summary>
+    /// Adds a patient to this client's collection of patients.
+    /// </summary>
+    /// <param name="patient"></param>
+    public void AddPatient(Patient patient)
+    {
+        Patients.Add(patient);
+    }
+
+    /// <summary>
+    /// Displays all patienst owned by this client
+    /// </summary>
+    public void DisplayPatients()
+    {
+        Console.WriteLine($"\nPatients owned by {Name}");
+
+        if (Patients.Count == 0)
+        {
+            Console.WriteLine("No patients registered.");
+            return;
+        }
+
+        foreach (Patient patient in Patients)
+        {
+            Console.WriteLine($"- {patient.Name} ({patient.Species}, {patient.Age} years old)");
+        }
     }
 
     /// <summary>

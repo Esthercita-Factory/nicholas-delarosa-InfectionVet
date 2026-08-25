@@ -32,8 +32,8 @@ while (running)
 6. Delete patient.
 7. Exit.
 8. List patients by species.
-9. Show patients statics.
-10. Display first patient information.");
+9. Show patients statistics.
+10. Display first client's patient.");
     Console.Write("Choose an option: ");
 
     string option = Console.ReadLine() ?? "";
@@ -117,15 +117,14 @@ while (running)
             break;
         
         case "10":
-            if (patients.Count > 0)
-            {
-                patients[0].DisplayInformation();
-            }
-            else
+            if (patients.Count == 0)
             {
                 Console.WriteLine("There are no patients.");
             }
+
+            Client firstClient = patients[0].Owner;
             
+            firstClient.DisplayPatients();
             break;
 
         default:
