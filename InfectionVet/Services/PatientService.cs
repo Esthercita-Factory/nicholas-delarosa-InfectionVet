@@ -387,4 +387,37 @@ public class PatientService
             }
         }
     }
+
+    /// <summary>
+    /// Finds patients of a specific species, orders them by age, and displays the patient's name and owner's phone.
+    /// </summary>
+    /// <param name="patients"></param>
+    /// <param name="species"></param>
+    public void ShowPatientsBySpecies(List<Patient> patients, string species)
+    {
+        var result = patients
+            .Where(patient =>
+                patient.Species.Equals(
+                    species,
+                    StringComparison.OrdinalIgnoreCase
+                )
+            )
+            .OrderBy(patient => patient.Age)
+            .Select(patient => new
+            {
+                PatientName = patient.Name,
+                OwnerPhone = patient.Owner.Phone
+            });
+
+        if (!result.Any())
+        {
+            Console.WriteLine($"No patients of species: {species} were found.");
+            return;
+        }
+
+        foreach (var patient in result)
+        {
+            Console.WriteLine($"Patient: {patient.PatientName} | Owner Phone: {patient.OwnerPhone}");
+        }
+    }
 }

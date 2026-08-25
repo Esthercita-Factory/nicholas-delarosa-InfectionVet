@@ -29,7 +29,8 @@ while (running)
 4. Find patient by id.
 5. Update patient.
 6. Delete patient.
-7. Exit");
+7. Exit.
+8. List patients by species");
     Console.Write("Choose an option: ");
 
     string option = Console.ReadLine() ?? "";
@@ -40,18 +41,18 @@ while (running)
             patientService.RegisterPatient(patients, patientDictionary, nextPatientId);
             nextPatientId++;
             break;
-        
+
         case "2":
             patientService.ListPatients(patients);
             break;
-        
+
         case "3":
             Console.Write("Enter patient name: ");
             string name = Console.ReadLine() ?? "";
-            
+
             patientService.FindPatientByName(patients, name);
             break;
-        
+
         case "4":
             Console.Write("Enter patient ID: ");
 
@@ -63,9 +64,9 @@ while (running)
             {
                 Console.WriteLine("Invalid ID.");
             }
-            
+
             break;
-        
+
         case "5":
             Console.Write("Enter patient ID: ");
 
@@ -77,9 +78,9 @@ while (running)
             {
                 Console.WriteLine("Invalid ID.");
             }
-            
+
             break;
-        
+
         case "6":
             Console.Write("Enter patient ID: ");
 
@@ -91,14 +92,22 @@ while (running)
             {
                 Console.WriteLine("Invalid ID.");
             }
-            
+
             break;
-        
+
         case "7":
             running = false;
             Console.WriteLine("Goodbye!");
             break;
         
+        case "8":
+            Console.WriteLine("Enter species: ");
+            string species = Console.ReadLine() ?? "";
+            
+            patientService.ShowPatientsBySpecies(patients, species);
+            
+            break;
+
         default:
             Console.WriteLine("Invalid option.");
             break;
