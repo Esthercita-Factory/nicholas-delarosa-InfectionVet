@@ -92,4 +92,7 @@ while (running)
             Console.WriteLine("Invalid option.");
             break;
     }
+    
+    // Just for Linq Consults
+    patientService.RunLinqExamples(patients);
 }

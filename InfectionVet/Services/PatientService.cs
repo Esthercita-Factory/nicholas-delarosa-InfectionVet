@@ -346,5 +346,45 @@ public class PatientService
         );
         
         Console.WriteLine($"Patient older than 5: {olderPatientCount}");
+        
+        // Query Syntax
+        Console.WriteLine("Query Syntax");
+        
+        // Where + Select
+        var queryNames =
+            from patient in patients
+            where patient.Age > 5
+            select patient.Name;
+
+        foreach (string name in queryNames)
+        {
+            Console.WriteLine(name);
+        }
+        
+        // OrderBy
+        var queryOrderedPatients =
+            from patient in patients
+            orderby patient.Name
+            select patient;
+
+        foreach (Patient patient in queryOrderedPatients)
+        {
+            Console.WriteLine(patient.Name);
+        }
+        
+        // GroupBy
+        var queryGroupedPatients =
+            from patient in patients
+            group patient by patient.Name;
+
+        foreach (var group in queryGroupedPatients)
+        {
+            Console.WriteLine($"Species: {group.Key}");
+
+            foreach (Patient patient in group)
+            {
+                Console.WriteLine($"- {patient.Name}");
+            }
+        }
     }
 }
