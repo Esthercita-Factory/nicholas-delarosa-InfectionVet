@@ -8,7 +8,7 @@ public class PatientService
     /// Registers a new patient and its owner.
     /// </summary>
     /// <param name="patients">Represents the patients' class as a list.</param>
-    /// <param name="patientDictionary">Represents the patients' class as a dictio</param>
+    /// <param name="patientDictionary">Represents the patients' class as a dictionary</param>
     /// <param name="id"></param>
     public void RegisterPatient(List<Patient> patients, Dictionary<int, Patient> patientDictionary, int id)
     {
@@ -33,11 +33,20 @@ public class PatientService
             }
 
             Console.Write("Enter symptom: ");
-            string symptom = Console.ReadLine() ?? "";
+            string symptom = Console.ReadLine() ?? "" ;
 
             if (string.IsNullOrWhiteSpace(symptom))
             {
-                Console.WriteLine("Sympton cannot be empty.");
+                Console.WriteLine("Symptom cannot be empty.");
+                return;
+            }
+
+            Console.Write("Enter species: ");
+            string species = Console.ReadLine() ?? "" ;
+
+            if (string.IsNullOrWhiteSpace(species))
+            {
+                Console.WriteLine("Species cannot be empty.");
                 return;
             }
             
@@ -82,6 +91,7 @@ public class PatientService
                 Name = name,
                 Age = age,
                 Symptom = symptom,
+                Species = species,
                 Owner = owner
             };
 
@@ -108,10 +118,10 @@ public class PatientService
             if (patient == null)
             {
                 Console.WriteLine(
-                    $"ID: {patient.Id} | Name: {patient.Name} |  Age: {patient.Age} | Symptom: {patient.Symptom} | Owner: Not registered.");
+                    $"ID: {patient.Id} | Name: {patient.Name} |  Age: {patient.Age} | Symptom: {patient.Symptom} | Species: {patient.Species} | Owner: Not registered.");
                 continue;
             }
-            Console.WriteLine($"ID: {patient.Id} | Name: {patient.Name} |  Age: {patient.Age} | Symptom: {patient.Symptom} | Owner: {patient.Owner.Name} | Phone: {patient.Owner.Phone}");
+            Console.WriteLine($"ID: {patient.Id} | Name: {patient.Name} |  Age: {patient.Age} | Symptom: {patient.Symptom} | Species: {patient.Species} | Owner: {patient.Owner.Name} | Phone: {patient.Owner.Phone}");
         }
     }
     
@@ -132,7 +142,7 @@ public class PatientService
             return;
         }
         
-        Console.WriteLine($"ID: {patient.Id} | Name: {patient.Name} |  Age: {patient.Age} | Symptom: {patient.Symptom} |  Owner: {patient.Owner.Name} | Phone: {patient.Owner.Phone} | Address: {patient.Owner.Address}");
+        Console.WriteLine($"ID: {patient.Id} | Name: {patient.Name} |  Age: {patient.Age} | Symptom: {patient.Symptom} | Species: {patient.Species} |  Owner: {patient.Owner.Name} | Phone: {patient.Owner.Phone} | Address: {patient.Owner.Address}");
     }
 
     public void FindPatientById(Dictionary<int, Patient> patientDictionary, int id)
@@ -143,7 +153,7 @@ public class PatientService
             return;
         }
         
-        Console.WriteLine($"ID: {patient.Id} | Name: {patient.Name} |  Age: {patient.Age} | Symptom: {patient.Symptom} | Owner: {patient.Owner.Name} | Phone: {patient.Owner.Phone}");
+        Console.WriteLine($"ID: {patient.Id} | Name: {patient.Name} |  Age: {patient.Age} | Symptom: {patient.Symptom} | Species: {patient.Species} | Owner: {patient.Owner.Name} | Phone: {patient.Owner.Phone}");
     }
 
     /// <summary>
@@ -185,9 +195,19 @@ public class PatientService
             return;
         }
         
+        Console.Write("Enter new species: ");
+        string species = Console.ReadLine() ?? "";
+
+        if (string.IsNullOrWhiteSpace(species))
+        {
+            Console.WriteLine("Species cannot be empty.");
+            return;
+        }
+        
         patient.Name = name;
         patient.Age = age;
         patient.Symptom = symptom;
+        patient.Species = species;
         
         Console.WriteLine("Patient updated successfully.");
     }
@@ -210,5 +230,121 @@ public class PatientService
         patients.Remove(patient);
         
         Console.WriteLine("Patient deleted successfully.");
+    }
+
+    /// <summary>
+    /// Demonstrates LINQ queries using method and query syntax.
+    /// </summary>
+    /// <param name="patients"></param>
+    public void RunLinqExamples(List<Patient> patients)
+    {
+        // Where
+        var olderPatients = patients
+            .Where(patient => patient.Age > 5);
+        
+        Console.WriteLine("\nPatients older than 5:");
+
+        foreach (Patient patient in olderPatients)
+        {
+            Console.WriteLine(patient.Name);
+        }
+
+        // Select
+        var patientNames = patients
+            .Select(patient => patient.Name);
+        
+        Console.WriteLine("\nPatient names:");
+
+        foreach (string name in patientNames)
+        {
+            Console.WriteLine(name);
+        }
+
+        // OrderBy
+        var patientsByName = patients
+            .OrderBy(patient => patient.Name);
+        
+        Console.WriteLine("\nPatients ordered by name:");
+
+        foreach (Patient patient in patientsByName)
+        {
+            Console.WriteLine(patient.Name);
+        }
+        
+        // OrderByDescending
+        var patientsByAgeDescending = patients
+            .OrderByDescending(patient => patient.Age);
+        
+        Console.WriteLine("\nPatients ordered by age:");
+
+        foreach (Patient patient in patientsByAgeDescending)
+        {
+            Console.WriteLine($"Name: {patient.Name} | Age: {patient.Age}");
+        }
+        
+        // GroupBy
+        var patientsBySpecies = patients
+            .GroupBy(patient => patient.Species);
+        
+        Console.WriteLine("\nPatients grouped by species:");
+
+        foreach (var group in patientsBySpecies)
+        {
+            Console.WriteLine($"Species: {group.Key}");
+
+            foreach (Patient patient in group)
+            {
+                Console.WriteLine($"- {patient.Name}");
+            }
+        }
+        
+        // First
+        if (patients.Count > 0)
+        {
+            Patient firstPatient = patients.First();
+            
+            Console.WriteLine($"\nFirst patient: {firstPatient.Name}");
+        }
+        
+        // FirstOrDefault
+        Patient? firstOlderPatient = patients
+            .FirstOrDefault(patient => patient.Age > 5);
+
+        if (firstOlderPatient != null)
+        {
+            Console.WriteLine($"\nFirst patient older than 5: {firstOlderPatient.Name}");
+        }
+        else
+        {
+            Console.WriteLine("\nNo patient older than 5 was found");
+        }
+        
+        // Any
+        bool hasFeverPatient = patients.Any(
+            patient => patient.Symptom.Equals(
+                "Fever",
+                StringComparison.OrdinalIgnoreCase
+            )
+        );
+        
+        Console.WriteLine($"\nHas patient with fever: {hasFeverPatient}");
+        
+        // All
+        bool allPatientsHaveOwners = patients.All(
+            patient => patient.Owner != null
+        );
+        
+        Console.WriteLine($"All patients have owners: {allPatientsHaveOwners}");
+        
+        // Count
+        int patientCount = patients.Count();
+        
+        Console.WriteLine($"\nTotal patients: {patientCount}");
+
+        int olderPatientCount = patients.Count(
+            patient => patient.Age < 5
+        );
+        
+        Console.WriteLine($"Patient older than 5: {olderPatientCount}");
     }
 }

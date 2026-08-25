@@ -10,5 +10,6 @@ public class Patient
     public string Name { get; set; }
     public int Age { get; set; }
     public string Symptom { get; set; }
+    public string Species { get; set; }
     public Client Owner { get; set; }
 }
