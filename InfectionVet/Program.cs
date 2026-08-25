@@ -30,7 +30,8 @@ while (running)
 5. Update patient.
 6. Delete patient.
 7. Exit.
-8. List patients by species");
+8. List patients by species.
+9. Show patients statics.");
     Console.Write("Choose an option: ");
 
     string option = Console.ReadLine() ?? "";
@@ -105,6 +106,11 @@ while (running)
             string species = Console.ReadLine() ?? "";
             
             patientService.ShowPatientsBySpecies(patients, species);
+            
+            break;
+        
+        case "9":
+            patientService.RunPatientStatistics(patients);
             
             break;
 

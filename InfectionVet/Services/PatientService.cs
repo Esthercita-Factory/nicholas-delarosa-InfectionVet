@@ -420,4 +420,70 @@ public class PatientService
             Console.WriteLine($"Patient: {patient.PatientName} | Owner Phone: {patient.OwnerPhone}");
         }
     }
+
+    /// <summary>
+    /// Demonstrate practical LINQ queries used to analyze patient data
+    /// </summary>
+    /// <param name="patients"></param>
+    public void RunPatientStatistics(List<Patient> patients)
+    {
+        if (patients.Count == 0)
+        {
+            Console.WriteLine("There are no patients to analyse.");
+            return;
+        }
+        
+        // Find the youngest patient.
+        Patient? youngestPatient = patients
+            .OrderBy(patient => patient.Age)
+            .FirstOrDefault();
+
+        if (youngestPatient != null)
+        {
+            Console.WriteLine($"Youngest patient: {youngestPatient.Name}, {youngestPatient.Age} years old");
+        }
+        
+        // Find oldest patient
+        Patient? oldestPatient = patients
+            .OrderByDescending(patient => patient.Age)
+            .FirstOrDefault();
+
+        if (oldestPatient != null)
+        {
+            Console.WriteLine($"Oldest patient: {oldestPatient.Name}, {oldestPatient.Age} years old");
+        }
+        
+        // Count the number of patients for each species
+        var countBySpecies = patients
+            .GroupBy(patient => patient.Species);
+        
+        Console.WriteLine("\nPatients by species:");
+
+        foreach (var group in countBySpecies)
+        {
+            Console.WriteLine($"{group.Key}: {group.Count()}");
+        }
+        
+        // Check whether at least one patient has fever
+        bool hasFeverPatient = patients.Any(patient =>
+            patient.Symptom.Equals(
+                "Fever",
+                StringComparison.OrdinalIgnoreCase
+            )
+        );
+        
+        Console.WriteLine($"\nHas patient with fever: {hasFeverPatient}");
+        
+        // Get all patient names in uppercase and alphabetic order
+        var patientNames = patients
+            .Select(patient => patient.Name.ToUpper())
+            .OrderBy(name => name);
+        
+        Console.WriteLine("\nPatient names:");
+
+        foreach (string name in patientNames)
+        {
+            Console.WriteLine(name);
+        }
+    }
 }
