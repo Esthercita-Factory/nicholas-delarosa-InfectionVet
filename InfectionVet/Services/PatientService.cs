@@ -49,6 +49,11 @@ public class PatientService
                 Console.WriteLine("Species cannot be empty.");
                 return;
             }
+
+            int ownerId = patients
+                .Select(patient => patient.Owner.Id)
+                .DefaultIfEmpty(0)
+                .Max() + 1;
             
             Console.Write("Enter owner's name: ");
             string ownerName = Console.ReadLine() ?? "";
@@ -77,23 +82,20 @@ public class PatientService
                 return;
             }
 
-            Client owner = new Client
-            {
-                Id = patients.Count + 1,
-                Name = ownerName,
-                Phone = ownerPhone,
-                Address = ownerAddress
-            };
+            Client owner = new Client(
+                ownerId,
+                ownerName,
+                ownerPhone,
+                ownerAddress);
 
-            Patient patient = new Patient
-            {
-                Id = id,
-                Name = name,
-                Age = age,
-                Symptom = symptom,
-                Species = species,
-                Owner = owner
-            };
+            Patient patient = new Patient(
+                id,
+                name,
+                age,
+                symptom,
+                species,
+                owner
+            );
 
             patients.Add(patient);
             patientDictionary.Add(patient.Id, patient);
