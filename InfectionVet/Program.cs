@@ -7,16 +7,17 @@ Dictionary<int, Patient> patientDictionary = [];
 int nextPatientId = 1;
 PatientService patientService = new PatientService();
 
-Patient testPatient = new Patient
-{
-    Id = 999,
-    Name = "Test Patient",
-    Age = 5,
-    Symptom = "Fever",
-    Species = "Dog"
-};
-
-Console.WriteLine($"Created patient: {testPatient.Name}");
+// S2 Exclusive
+// Patient testPatient = new Patient
+// {
+//     Id = 999,
+//     Name = "Test Patient",
+//     Age = 5,
+//     Symptom = "Fever",
+//     Species = "Dog"
+// };
+//
+// Console.WriteLine($"Created patient: {testPatient.Name}");
 
 bool running = true;
 
@@ -120,5 +121,5 @@ while (running)
     }
     
     // Just for Linq Consults
-    patientService.RunLinqExamples(patients);
+    // patientService.RunLinqExamples(patients);
 }
