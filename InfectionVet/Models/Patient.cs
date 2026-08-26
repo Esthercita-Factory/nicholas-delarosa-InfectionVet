@@ -5,7 +5,8 @@ namespace InfectionVet.Models;
 /// <summary>
 /// Patient inherits from Animal because a patient represents a pet, and implements IRegistrable because patients can be registered in the clinic.
 /// </summary>
-public class Patient : Animal, IRegistrable
+public class Patient : Animal, IRegistrable, INotifiable
+
 {
     // Patient data and owner relationship are kept together because the patient represents the pet registered at the clinic.
     public int Id { get; private set; }
@@ -102,5 +103,13 @@ Owner: {Owner.Name}");
     public void Register()
     {
         Console.WriteLine($"Patient {Name} registered successfully.");
+    }
+
+    /// <summary>
+    /// Sends a simulated appointment reminder for the patient.
+    /// </summary>
+    public void SendNotification()
+    {
+        Console.WriteLine($"Appointment reminder: {Name} has a veterinary appointment.");
     }
 }
