@@ -1,10 +1,12 @@
+using InfectionVet.Interfaces;
+
 namespace InfectionVet.Models;
 
 /// <summary>
 /// Represents a veterinary patient.
 /// In InfectionVet, a patient is a pet owned by a client.
 /// </summary>
-public class Patient : Animal
+public class Patient : Animal, IRegistrable
 {
     // Patient data and owner relationship are kept together because the patient represents the pet registered at the clinic.
     public int Id { get; private set; }
@@ -93,5 +95,13 @@ Owner: {Owner.Name}");
                 Console.WriteLine("The animal makes a sound.");
                 break;
         }
+    }
+
+    /// <summary>
+    /// Registers the patient in the veterinary clinic.
+    /// </summary>
+    public void Register()
+    {
+        Console.WriteLine($"Patient {Name} registered successfully.");
     }
 }

@@ -1,3 +1,4 @@
+using InfectionVet.Interfaces;
 using InfectionVet.Models;
 
 namespace InfectionVet.Services;
@@ -502,5 +503,25 @@ public class PatientService
         {
             Console.WriteLine(name);
         }
+    }
+
+    /// <summary>
+    /// Demonstrates polymorphism using the IRegistrable interface.
+    /// </summary>
+    public void RunRegistrationTest()
+    {
+        IRegistrable registrable = new Patient(
+            999,
+            "Registration Test",
+            3,
+            "None",
+            "Dog",
+            new Client(
+                999,
+                "Test Owner",
+                "0000000000",
+                "Test Address"));
+        
+        registrable.Register();
     }
 }

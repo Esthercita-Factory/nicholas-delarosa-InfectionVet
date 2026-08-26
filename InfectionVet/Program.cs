@@ -8,34 +8,34 @@ int nextPatientId = 1;
 PatientService patientService = new PatientService();
 
 // Temporary polymorphism test for S3 TASK 5.
-Animal dog = new Patient(
-    100,
-    "Test Dog",
-    5,
-    "None",
-    "Dog",
-    new Client(
-        100,
-        "Test Owner",
-        "0000000000",
-        "Test Address")
-);
-
-Animal cat = new Patient(
-    101,
-    "Test Cat",
-    5,
-    "None",
-    "Cat",
-    new Client(
-        100,
-        "Test Owner",
-        "0000000000",
-        "Test Address")
-);
-
-dog.MakeSound();
-cat.MakeSound();
+// Animal dog = new Patient(
+//     100,
+//     "Test Dog",
+//     5,
+//     "None",
+//     "Dog",
+//     new Client(
+//         100,
+//         "Test Owner",
+//         "0000000000",
+//         "Test Address")
+// );
+//
+// Animal cat = new Patient(
+//     101,
+//     "Test Cat",
+//     5,
+//     "None",
+//     "Cat",
+//     new Client(
+//         100,
+//         "Test Owner",
+//         "0000000000",
+//         "Test Address")
+// );
+//
+// dog.MakeSound();
+// cat.MakeSound();
 
 // S2 Exclusive
 // Patient testPatient = new Patient
@@ -63,7 +63,8 @@ while (running)
 7. Exit.
 8. List patients by species.
 9. Show patients statistics.
-10. Display first client's patient.");
+10. Display first client's patient.
+11. Test registration interface.");
     Console.Write("Choose an option: ");
 
     string option = Console.ReadLine() ?? "";
@@ -156,6 +157,10 @@ while (running)
             Client firstClient = patients[0].Owner;
             
             firstClient.DisplayPatients();
+            break;
+        
+        case "11":
+            patientService.RunRegistrationTest();
             break;
 
         default:
