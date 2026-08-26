@@ -1,3 +1,4 @@
+using InfectionVet.Exceptions;
 using InfectionVet.Interfaces;
 using InfectionVet.Models;
 
@@ -27,10 +28,9 @@ public class PatientService
             Console.Write("Enter patient age: ");
             int age = int.Parse(Console.ReadLine() ?? "");
 
-            if (age <= 0)
+            if (age < 0)
             {
-                Console.WriteLine("Patient age must be greater than zero.");
-                return;
+                throw new InvalidPatientAgeException(age);
             }
 
             Console.Write("Enter symptom: ");

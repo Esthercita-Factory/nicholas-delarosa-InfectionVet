@@ -1,4 +1,5 @@
-﻿using InfectionVet.Interfaces;
+﻿using InfectionVet.Exceptions;
+using InfectionVet.Interfaces;
 using InfectionVet.Models;
 using InfectionVet.Services;
 
@@ -8,13 +9,32 @@ Dictionary<int, Patient> patientDictionary = [];
 int nextPatientId = 1;
 PatientService patientService = new PatientService();
 
+// Temporary exception handling test for S4 TASK 5.
+try
+{
+    int firstNumber = 10;
+    int secondNumber = 0;
+
+    int result = firstNumber / secondNumber;
+
+    Console.WriteLine($"Result: {result}");
+}
+catch (DivideByZeroException)
+{
+    Console.WriteLine("Cannot divide by zero.");
+}
+finally
+{
+    Console.WriteLine("Exception handling test completed.");
+}
+
 // Temporary debugging test for S4 TASK 4
-int firstNumber = 10;
-int secondNumber = 2;
-
-int result = firstNumber / secondNumber;
-
-Console.WriteLine($"Result: {result}");
+// int firstNumber = 10;
+// int secondNumber = 2;
+//
+// int result = firstNumber / secondNumber;
+//
+// Console.WriteLine($"Result: {result}");
 
 // Temporary multiple-interface test for S4 TASK 3
 // Patient testPatient = new Patient(
@@ -109,8 +129,16 @@ while (running)
     switch (option)
     {
         case "1":
-            patientService.RegisterPatient(patients, patientDictionary, nextPatientId);
-            nextPatientId++;
+            try
+            {
+                patientService.RegisterPatient(patients, patientDictionary, nextPatientId);
+                nextPatientId++;
+            }
+            catch (InvalidPatientAgeException ex)
+            {
+                Console.WriteLine($"Registration failed: {ex.Message}");
+            }
+            
             break;
 
         case "2":
