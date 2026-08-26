@@ -1,9 +1,11 @@
-﻿namespace InfectionVet.Services;
+﻿using InfectionVet.Interfaces;
+
+namespace InfectionVet.Services;
 
 /// <summary>
 /// Represents a vaccination veterinary service.
 /// </summary>
-public class Vaccination : VeterinaryService
+public class Vaccination : VeterinaryService, IAtendible
 {
     /// <summary>
     /// Initializes a new vaccination service.

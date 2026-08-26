@@ -1,9 +1,11 @@
-﻿namespace InfectionVet.Services;
+﻿using InfectionVet.Interfaces;
+
+namespace InfectionVet.Services;
 
 /// <summary>
 /// Represents a general veterinary consultation.
 /// </summary>
-public class GeneralConsultation : VeterinaryService
+public class GeneralConsultation : VeterinaryService, IAtendible
 {
     /// <summary>
     /// Initializes a new general consultation.

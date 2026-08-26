@@ -1,4 +1,5 @@
-﻿using InfectionVet.Models;
+﻿using InfectionVet.Interfaces;
+using InfectionVet.Models;
 using InfectionVet.Services;
 
 // Store all registered patients.
@@ -6,6 +7,15 @@ List<Patient> patients = [];
 Dictionary<int, Patient> patientDictionary = [];
 int nextPatientId = 1;
 PatientService patientService = new PatientService();
+
+// Temporary IAtendible test for S4 TASK 2.
+IAtendible consultation = new
+    GeneralConsultation();
+IAtendible vaccination = new 
+    Vaccination();
+
+consultation.Attend();
+vaccination.Attend();
 
 // Temporary polymorphism test for S3 TASK 5.
 // Animal dog = new Patient(
@@ -63,8 +73,7 @@ while (running)
 7. Exit.
 8. List patients by species.
 9. Show patients statistics.
-10. Display first client's patient.
-11. Test registration interface.");
+10. Display first client's patient.");
     Console.Write("Choose an option: ");
 
     string option = Console.ReadLine() ?? "";
@@ -157,10 +166,6 @@ while (running)
             Client firstClient = patients[0].Owner;
             
             firstClient.DisplayPatients();
-            break;
-        
-        case "11":
-            patientService.RunRegistrationTest();
             break;
 
         default:
