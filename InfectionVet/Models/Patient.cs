@@ -3,8 +3,7 @@ using InfectionVet.Interfaces;
 namespace InfectionVet.Models;
 
 /// <summary>
-/// Represents a veterinary patient.
-/// In InfectionVet, a patient is a pet owned by a client.
+/// Patient inherits from Animal because a patient represents a pet, and implements IRegistrable because patients can be registered in the clinic.
 /// </summary>
 public class Patient : Animal, IRegistrable
 {

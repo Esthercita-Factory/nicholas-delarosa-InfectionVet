@@ -1,7 +1,9 @@
 ﻿namespace InfectionVet.Services;
 
 /// <summary>
-/// Represents a general veterinary service.
+/// Represents the common structure of a veterinary service.
+/// An abstract class is used because all veterinary services share common state and behavior, such as the service name.
+/// Derived services must provide their own implementation of Attend(). 
 /// </summary>
 public abstract class VeterinaryService
 {
@@ -16,5 +18,6 @@ public abstract class VeterinaryService
         Name = name;
     }
 
+    // Each veterinary service performs the attendance differently, so the specific implementation is delegated to the derived class.
     public abstract void Attend();
 }

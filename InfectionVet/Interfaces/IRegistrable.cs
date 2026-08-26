@@ -1,7 +1,8 @@
 ﻿namespace InfectionVet.Interfaces;
 
 /// <summary>
-/// Defines an entity that can be registered in the veterinary clinic.
+/// Defines the contract for entities that can be registered in the clinic.
+/// An interface is used because different types of entities can provide registration behavior without belonging to the same inheritance hierarchy.
 /// </summary>
 public interface IRegistrable
 {

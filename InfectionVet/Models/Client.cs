@@ -1,7 +1,8 @@
 namespace InfectionVet.Models;
 
 /// <summary>
-/// Represents a client who owns one or more patients in the veterinary clinic.
+/// Client represents the owner of one or more patients.
+/// Patients are the pets registered in the clinics, so Client does not inherit from Patient or Animal.
 /// </summary>
 public class Client
 {
