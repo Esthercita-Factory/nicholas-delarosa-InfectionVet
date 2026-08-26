@@ -5,18 +5,30 @@ namespace InfectionVet.Models;
 /// </summary>
 public class Client
 {
+    private string _phone;
+    
+    private readonly List<Patient> _patients = new();
+    
     public int Id  { get; set; }
     
     public string Name { get; set; }
-    
-    public string Phone { get; set; }
+
+    /// <summary>
+    /// Gets the client's phone number.
+    /// The value can only be modified inside the Client class.
+    /// </summary>
+    public string Phone
+    {
+        get => _phone;
+        private set => _phone = value;
+    }
     
     public string Address { get; set; }
 
     /// <summary>
-    /// Contains all patients owned by this client.
+    /// Provides read-only access to the patients owned by this client.
     /// </summary>
-    public List<Patient> Patients { get; } = new();
+    public IReadOnlyList<Patient> Patients => _patients;
 
     /// <summary>
     /// Initializes a new client with the required information.
@@ -43,7 +55,7 @@ public class Client
     /// <param name="patient"></param>
     public void AddPatient(Patient patient)
     {
-        Patients.Add(patient);
+        _patients.Add(patient);
     }
 
     /// <summary>
@@ -53,13 +65,13 @@ public class Client
     {
         Console.WriteLine($"\nPatients owned by {Name}");
 
-        if (Patients.Count == 0)
+        if (_patients.Count == 0)
         {
             Console.WriteLine("No patients registered.");
             return;
         }
 
-        foreach (Patient patient in Patients)
+        foreach (Patient patient in _patients)
         {
             Console.WriteLine($"- {patient.Name} ({patient.Species}, {patient.Age} years old)");
         }

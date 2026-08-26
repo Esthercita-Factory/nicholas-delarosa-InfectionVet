@@ -7,12 +7,12 @@ namespace InfectionVet.Models;
 public class Patient
 {
     // Patient data and owner relationship are kept together because the patient represents the pet registered at the clinic.
-    public int Id { get; set; }
+    public int Id { get; private set; }
     public string Name { get; set; }
     public int Age { get; set; }
     public string Symptom { get; set; }
     public string Species { get; set; }
-    public Client Owner { get; set; }
+    public Client Owner { get; private set; }
 
     /// <summary>
     /// Initializes a new veterinary patient.
