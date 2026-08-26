@@ -7,6 +7,36 @@ Dictionary<int, Patient> patientDictionary = [];
 int nextPatientId = 1;
 PatientService patientService = new PatientService();
 
+// Temporary polymorphism test for S3 TASK 5.
+Animal dog = new Patient(
+    100,
+    "Test Dog",
+    5,
+    "None",
+    "Dog",
+    new Client(
+        100,
+        "Test Owner",
+        "0000000000",
+        "Test Address")
+);
+
+Animal cat = new Patient(
+    101,
+    "Test Cat",
+    5,
+    "None",
+    "Cat",
+    new Client(
+        100,
+        "Test Owner",
+        "0000000000",
+        "Test Address")
+);
+
+dog.MakeSound();
+cat.MakeSound();
+
 // S2 Exclusive
 // Patient testPatient = new Patient
 // {
@@ -120,6 +150,7 @@ while (running)
             if (patients.Count == 0)
             {
                 Console.WriteLine("There are no patients.");
+                break;
             }
 
             Client firstClient = patients[0].Owner;

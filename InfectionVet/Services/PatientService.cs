@@ -221,10 +221,10 @@ public class PatientService
             return;
         }
         
-        patient.Name = name;
-        patient.Age = age;
+        patient.UpdateName(name);
+        patient.UpdateAge(age);
         patient.Symptom = symptom;
-        patient.Species = species;
+        patient.UpdateSpecies(species);
         
         Console.WriteLine("Patient updated successfully.");
     }
