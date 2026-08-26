@@ -2,6 +2,7 @@
 using InfectionVet.Interfaces;
 using InfectionVet.Models;
 using InfectionVet.Services;
+using InfectionVet.Utilities;
 
 // Store all registered patients.
 List<Patient> patients = [];
@@ -10,23 +11,23 @@ int nextPatientId = 1;
 PatientService patientService = new PatientService();
 
 // Temporary exception handling test for S4 TASK 5.
-try
-{
-    int firstNumber = 10;
-    int secondNumber = 0;
-
-    int result = firstNumber / secondNumber;
-
-    Console.WriteLine($"Result: {result}");
-}
-catch (DivideByZeroException)
-{
-    Console.WriteLine("Cannot divide by zero.");
-}
-finally
-{
-    Console.WriteLine("Exception handling test completed.");
-}
+// try
+// {
+//     int firstNumber = 10;
+//     int secondNumber = 0;
+//
+//     int result = firstNumber / secondNumber;
+//
+//     Console.WriteLine($"Result: {result}");
+// }
+// catch (DivideByZeroException)
+// {
+//     Console.WriteLine("Cannot divide by zero.");
+// }
+// finally
+// {
+//     Console.WriteLine("Exception handling test completed.");
+// }
 
 // Temporary debugging test for S4 TASK 4
 // int firstNumber = 10;
@@ -133,10 +134,14 @@ while (running)
             {
                 patientService.RegisterPatient(patients, patientDictionary, nextPatientId);
                 nextPatientId++;
+                
+                Logger.LogInfo("Patient registered successfully.");
             }
             catch (InvalidPatientAgeException ex)
             {
                 Console.WriteLine($"Registration failed: {ex.Message}");
+                
+                Logger.LogError($"Patient registration failed: {ex.Message}");
             }
             
             break;

@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <Folder Include="Documentation\" />
+      <Folder Include="Logs\" />
     </ItemGroup>
 
 </Project>
