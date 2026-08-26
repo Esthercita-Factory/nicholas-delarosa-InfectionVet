@@ -8,25 +8,33 @@ Dictionary<int, Patient> patientDictionary = [];
 int nextPatientId = 1;
 PatientService patientService = new PatientService();
 
+// Temporary debugging test for S4 TASK 4
+int firstNumber = 10;
+int secondNumber = 2;
+
+int result = firstNumber / secondNumber;
+
+Console.WriteLine($"Result: {result}");
+
 // Temporary multiple-interface test for S4 TASK 3
-Patient testPatient = new Patient(
-    999,
-    "Notification Test",
-    5,
-    "None",
-    "Dog",
-    new Client(
-        999,
-        "Test Owner",
-        "0000000000",
-        "Test Address")
-);
-
-IRegistrable registrable = testPatient;
-INotifiable notifiable = testPatient;
-
-registrable.Register();
-notifiable.SendNotification();
+// Patient testPatient = new Patient(
+//     999,
+//     "Notification Test",
+//     5,
+//     "None",
+//     "Dog",
+//     new Client(
+//         999,
+//         "Test Owner",
+//         "0000000000",
+//         "Test Address")
+// );
+//
+// IRegistrable registrable = testPatient;
+// INotifiable notifiable = testPatient;
+//
+// registrable.Register();
+// notifiable.SendNotification();
 
 // // Temporary IAtendible test for S4 TASK 2.
 // IAtendible consultation = new
