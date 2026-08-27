@@ -124,6 +124,76 @@ public class PatientService
             Console.WriteLine("Invalid age. Please enter a whole number.");
         }
     }
+
+    /// <summary>
+    /// Registers a patient asynchronously amd simulates a delayed operation.
+    /// </summary>
+    /// <param name="patients">The collection of registered patients.</param>
+    /// <param name="patientDictionary">The dictionary of registered patients.</param>
+    /// <param name="nextPatientId">The ID assigned to the new patient.</param>
+    public async Task RegisterPatientAsync(
+        List<Patient> patients,
+        Dictionary<int, Patient> patientDictionary,
+        int nextPatientId)
+    {
+        Console.WriteLine("Starting patient registration...");
+
+        Console.Write("Enter patient name: ");
+        string name = Console.ReadLine() ?? "";
+
+        Console.Write("Enter patient age: ");
+
+        if (!int.TryParse(Console.ReadLine(), out int age))
+        {
+            Console.WriteLine("Invalid age.");
+            return;
+        }
+
+        if (age < 0)
+        {
+            throw new InvalidPatientAgeException(age);
+        }
+
+        Console.Write("Enter symptom: ");
+        string symptom = Console.ReadLine() ?? "";
+
+        Console.Write("Enter species: ");
+        string species = Console.ReadLine() ?? "";
+
+        Console.Write("Enter owner's name: ");
+        string ownerName = Console.ReadLine() ?? "";
+
+        Console.Write("Enter owner's phone: ");
+        string ownerPhone = Console.ReadLine() ?? "";
+
+        Console.Write("Enter owner's address: ");
+        string ownerAddress = Console.ReadLine() ?? "";
+
+        Console.WriteLine("Processing patient registration...");
+
+        await Task.Delay(2000);
+
+        Client owner = new Client(
+            nextPatientId,
+            ownerName,
+            ownerPhone,
+            ownerAddress);
+
+        Patient patient = new Patient(
+            nextPatientId,
+            name,
+            age,
+            symptom,
+            species,
+            owner);
+
+        owner.AddPatient(patient);
+
+        patients.Add(patient);
+        patientDictionary.Add(patient.Id, patient);
+
+        Console.WriteLine("Patient registered successfully.");
+    }
     
     public void ListPatients(List<Patient> patients)
     {

@@ -11,15 +11,15 @@ int nextPatientId = 1;
 PatientService patientService = new PatientService();
 
 // Temporary sync and async test for S5 TASK 1.
-AsyncDemoService asyncDemoService = new AsyncDemoService();
-
-asyncDemoService.RunSynchronousExample();
-
-Task asyncTask = asyncDemoService.RunAsynchronousExample();
-
-Console.WriteLine("The main program can continue while the asynchronous operation is waiting.");
-
-await asyncTask;
+// AsyncDemoService asyncDemoService = new AsyncDemoService();
+//
+// asyncDemoService.RunSynchronousExample();
+//
+// Task asyncTask = asyncDemoService.RunAsynchronousExample();
+//
+// Console.WriteLine("The main program can continue while the asynchronous operation is waiting.");
+//
+// await asyncTask;
 
 // Temporary exception handling test for S4 TASK 5.
 // try
@@ -144,7 +144,12 @@ while (running)
         case "1":
             try
             {
-                patientService.RegisterPatient(patients, patientDictionary, nextPatientId);
+                Task registrationTask = patientService.RegisterPatientAsync(patients, patientDictionary, nextPatientId);
+                
+                Console.WriteLine("The menu can continue while registration is running.");
+
+                await registrationTask;
+                
                 nextPatientId++;
                 
                 Logger.LogInfo("Patient registered successfully.");
