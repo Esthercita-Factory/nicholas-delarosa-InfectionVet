@@ -2,11 +2,16 @@ namespace InfectionVet.Utilities;
 
 /// <summary>
 /// Provides basic file logging for application events and errors.
+/// The log can help technical support identify when an error occured, what operation caused it, and what message was generated.
 /// </summary>
 public class Logger
 {
+    private static readonly string ProjectDirectory =
+        Path.GetFullPath(
+            Path.Combine(AppContext.BaseDirectory, "../../../"));
+    
     private static readonly string LogDirectory =
-        Path.Combine(AppContext.BaseDirectory, "Logs");
+        Path.Combine(ProjectDirectory, "Logs");
     
     private static readonly string LogFile =
         Path.Combine(LogDirectory, "infectionvet.log");
