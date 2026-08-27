@@ -10,6 +10,17 @@ Dictionary<int, Patient> patientDictionary = [];
 int nextPatientId = 1;
 PatientService patientService = new PatientService();
 
+// Temporary sync and async test for S5 TASK 1.
+AsyncDemoService asyncDemoService = new AsyncDemoService();
+
+asyncDemoService.RunSynchronousExample();
+
+Task asyncTask = asyncDemoService.RunAsynchronousExample();
+
+Console.WriteLine("The main program can continue while the asynchronous operation is waiting.");
+
+await asyncTask;
+
 // Temporary exception handling test for S4 TASK 5.
 // try
 // {
