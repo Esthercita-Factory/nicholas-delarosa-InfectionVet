@@ -126,7 +126,8 @@ public class PatientService
     }
 
     /// <summary>
-    /// Registers a patient asynchronously amd simulates a delayed operation.
+    /// Registers a patient asynchronously and simulates a delayed operation.
+    /// Using await prevents the application from blocking while the operation is waiting to complete.
     /// </summary>
     /// <param name="patients">The collection of registered patients.</param>
     /// <param name="patientDictionary">The dictionary of registered patients.</param>

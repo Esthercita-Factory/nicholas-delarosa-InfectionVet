@@ -21,8 +21,8 @@ public class AsyncDemoService
     }
 
     /// <summary>
-    /// Demonstrates an asynchronous operation using Task.Delay.
-    /// Unlike Thread.Sleep, Task.Delay does not block the thread while waiting. 
+    /// Demonstrates how asynchronous programming allows the application to continue other work while waiting for a slow operation to finish.
+    /// This can improve the user experience by keeping the application responsive.
     /// </summary>
     public async Task RunAsynchronousExample()
     {
