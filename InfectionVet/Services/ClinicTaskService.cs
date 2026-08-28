@@ -1,3 +1,5 @@
+using InfectionVet.Models;
+
 namespace InfectionVet.Services;
 
 /// <summary>
@@ -93,5 +95,42 @@ public class ClinicTaskService
         Console.WriteLine("The first clinic process has completed.");
 
         await completedTask;
+    }
+
+    /// <summary>
+    /// Simulates processing a single patient asynchronously.
+    /// </summary>
+    /// <param name="patient">The patient being processed.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    private async Task ProcessSinglePatientAsync(Patient patient)
+    {
+        int processingTime = patient.Id % 2 == 0 ? 2000 : 4000;
+
+        Console.WriteLine($"Processing patient {patient.Name} ({processingTime / 1000}s)...");
+        
+        await Task.Delay(processingTime);
+        
+        Console.WriteLine($"Finished processing patient: {patient.Name}");
+    }
+
+    /// <summary>
+    /// Simulates processing multiple patients concurrently.
+    /// </summary>
+    /// <param name="patients">The patients to process.</param>
+    /// <returns>A <see cref="Task"/> that completes when all patients have been processed.</returns>
+    public async Task ProcessPatientsConcurrentlyAsync(List<Patient> patients)
+    {
+        Console.WriteLine("\nStarting concurrent patient processing...");
+
+        List<Task> patientTasks = [];
+
+        foreach (Patient patient in patients)
+        {
+            patientTasks.Add(ProcessSinglePatientAsync(patient));
+        }
+
+        await Task.WhenAll(patientTasks);
+        
+        Console.WriteLine("All patients have been processed.");
     }
 }

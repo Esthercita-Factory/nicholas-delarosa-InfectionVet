@@ -10,11 +10,14 @@ Dictionary<int, Patient> patientDictionary = [];
 int nextPatientId = 1;
 PatientService patientService = new PatientService();
 
-// Temporary async test for S5 TASK 3.
+// Temporary async test for S5 TASK 4
 ClinicTaskService clinicTaskService = new ClinicTaskService();
 
-await clinicTaskService.RunAllClinicProcessesAsync();
-await clinicTaskService.RunFirstCompletedClinicProcessAsync();
+// Temporary async test for S5 TASK 3.
+// ClinicTaskService clinicTaskService = new ClinicTaskService();
+//
+// await clinicTaskService.RunAllClinicProcessesAsync();
+// await clinicTaskService.RunFirstCompletedClinicProcessAsync();
 
 // Temporary sync and async test for S5 TASK 1.
 // AsyncDemoService asyncDemoService = new AsyncDemoService();
@@ -140,7 +143,8 @@ while (running)
 7. Exit.
 8. List patients by species.
 9. Show patients statistics.
-10. Display first client's patient.");
+10. Display first client's patient.
+11. Process patients concurrently.");
     Console.Write("Choose an option: ");
 
     string option = Console.ReadLine() ?? "";
@@ -250,6 +254,10 @@ while (running)
             Client firstClient = patients[0].Owner;
             
             firstClient.DisplayPatients();
+            break;
+        
+        case "11":
+            await clinicTaskService.ProcessPatientsConcurrentlyAsync(patients);
             break;
 
         default:
