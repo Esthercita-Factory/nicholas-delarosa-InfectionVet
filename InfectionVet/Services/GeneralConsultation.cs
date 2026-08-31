@@ -1,4 +1,5 @@
-﻿using InfectionVet.Interfaces;
+using InfectionVet.Interfaces;
+using InfectionVet.Utilities;
 
 namespace InfectionVet.Services;
 
@@ -13,7 +14,6 @@ public class GeneralConsultation : VeterinaryService, IAtendible
     public GeneralConsultation()
         : base("General Consultation")
     {
-        
     }
 
     /// <summary>
@@ -21,6 +21,6 @@ public class GeneralConsultation : VeterinaryService, IAtendible
     /// </summary>
     public override void Attend()
     {
-        Console.WriteLine("Performing a general veterinary consultation.");
+        ConsoleUI.WriteSuccess("Performing a general veterinary consultation.");
     }
 }

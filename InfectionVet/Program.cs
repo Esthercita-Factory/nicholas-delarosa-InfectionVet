@@ -1,270 +1,221 @@
-﻿using InfectionVet.Exceptions;
-using InfectionVet.Interfaces;
+using InfectionVet.Exceptions;
 using InfectionVet.Models;
 using InfectionVet.Services;
 using InfectionVet.Utilities;
 
-// Store all registered patients.
+ConsoleUI.Initialize();
+
 List<Patient> patients = [];
 Dictionary<int, Patient> patientDictionary = [];
 int nextPatientId = 1;
-PatientService patientService = new PatientService();
 
-// Temporary async test for S5 TASK 4
-ClinicTaskService clinicTaskService = new ClinicTaskService();
-
-// Temporary async test for S5 TASK 3.
-// ClinicTaskService clinicTaskService = new ClinicTaskService();
-//
-// await clinicTaskService.RunAllClinicProcessesAsync();
-// await clinicTaskService.RunFirstCompletedClinicProcessAsync();
-
-// Temporary sync and async test for S5 TASK 1.
-// AsyncDemoService asyncDemoService = new AsyncDemoService();
-//
-// asyncDemoService.RunSynchronousExample();
-//
-// Task asyncTask = asyncDemoService.RunAsynchronousExample();
-//
-// Console.WriteLine("The main program can continue while the asynchronous operation is waiting.");
-//
-// await asyncTask;
-
-// Temporary exception handling test for S4 TASK 5.
-// try
-// {
-//     int firstNumber = 10;
-//     int secondNumber = 0;
-//
-//     int result = firstNumber / secondNumber;
-//
-//     Console.WriteLine($"Result: {result}");
-// }
-// catch (DivideByZeroException)
-// {
-//     Console.WriteLine("Cannot divide by zero.");+
-
-// }
-// finally
-// {
-//     Console.WriteLine("Exception handling test completed.");
-// }
-
-// Temporary debugging test for S4 TASK 4
-// int firstNumber = 10;
-// int secondNumber = 2;
-//
-// int result = firstNumber / secondNumber;
-//
-// Console.WriteLine($"Result: {result}");
-
-// Temporary multiple-interface test for S4 TASK 3
-// Patient testPatient = new Patient(
-//     999,
-//     "Notification Test",
-//     5,
-//     "None",
-//     "Dog",
-//     new Client(
-//         999,
-//         "Test Owner",
-//         "0000000000",
-//         "Test Address")
-// );
-//
-// IRegistrable registrable = testPatient;
-// INotifiable notifiable = testPatient;
-//
-// registrable.Register();
-// notifiable.SendNotification();
-
-// // Temporary IAtendible test for S4 TASK 2.
-// IAtendible consultation = new
-//     GeneralConsultation();
-// IAtendible vaccination = new 
-//     Vaccination();
-//
-// consultation.Attend();
-// vaccination.Attend();
-
-// Temporary polymorphism test for S3 TASK 5.
-// Animal dog = new Patient(
-//     100,
-//     "Test Dog",
-//     5,
-//     "None",
-//     "Dog",
-//     new Client(
-//         100,
-//         "Test Owner",
-//         "0000000000",
-//         "Test Address")
-// );
-//
-// Animal cat = new Patient(
-//     101,
-//     "Test Cat",
-//     5,
-//     "None",
-//     "Cat",
-//     new Client(
-//         100,
-//         "Test Owner",
-//         "0000000000",
-//         "Test Address")
-// );
-//
-// dog.MakeSound();
-// cat.MakeSound();
-
-// S2 Exclusive
-// Patient testPatient = new Patient
-// {
-//     Id = 999,
-//     Name = "Test Patient",
-//     Age = 5,
-//     Symptom = "Fever",
-//     Species = "Dog"
-// };
-//
-// Console.WriteLine($"Created patient: {testPatient.Name}");
+PatientService patientService = new();
+ClinicTaskService clinicTaskService = new();
+AsyncDemoService asyncDemoService = new();
 
 bool running = true;
 
 while (running)
 {
-    Console.WriteLine($@"Infection Vet
-1. Register patient.
-2. List patients.
-3. Find patient by name.
-4. Find patient by id.
-5. Update patient.
-6. Delete patient.
-7. Exit.
-8. List patients by species.
-9. Show patients statistics.
-10. Display first client's patient.
-11. Process patients concurrently.");
-    Console.Write("Choose an option: ");
+    ConsoleUI.ClearScreen();
+    ConsoleUI.WriteBanner("INFECTION VET", "Veterinary Clinic Management System");
 
-    string option = Console.ReadLine() ?? "";
+    PrintMainMenu();
 
-    switch (option)
+    Console.ForegroundColor = ConsoleColor.Gray;
+    Console.Write("Select an option: ");
+    Console.ResetColor();
+
+    string option = (Console.ReadLine() ?? string.Empty).Trim();
+
+    if (option == "0")
     {
-        case "1":
-            try
-            {
+        running = false;
+        ConsoleUI.WriteSuccess("Goodbye, and thank you for using Infection Vet!");
+        break;
+    }
+
+    try
+    {
+        switch (option)
+        {
+            case "1":
                 Task registrationTask = patientService.RegisterPatientAsync(patients, patientDictionary, nextPatientId);
-                
-                Console.WriteLine("The menu can continue while registration is running.");
+
+                ConsoleUI.WriteInfo("The menu thread stays responsive while registration is being processed...");
 
                 await registrationTask;
-                
+
+                Logger.LogInfo($"Patient '{patients[^1].Name}' registered successfully with ID {nextPatientId}.");
                 nextPatientId++;
-                
-                Logger.LogInfo("Patient registered successfully.");
-            }
-            catch (InvalidPatientAgeException ex)
-            {
-                Console.WriteLine($"Registration failed: {ex.Message}");
-                
-                Logger.LogError($"Patient registration failed: {ex.Message}");
-            }
-            
-            break;
 
-        case "2":
-            patientService.ListPatients(patients);
-            break;
-
-        case "3":
-            Console.Write("Enter patient name: ");
-            string name = Console.ReadLine() ?? "";
-
-            patientService.FindPatientByName(patients, name);
-            break;
-
-        case "4":
-            Console.Write("Enter patient ID: ");
-
-            if (int.TryParse(Console.ReadLine(), out int id))
-            {
-                patientService.FindPatientById(patientDictionary, id);
-            }
-            else
-            {
-                Console.WriteLine("Invalid ID.");
-            }
-
-            break;
-
-        case "5":
-            Console.Write("Enter patient ID: ");
-
-            if (int.TryParse(Console.ReadLine(), out int updateId))
-            {
-                patientService.UpdatePatient(patientDictionary, updateId);
-            }
-            else
-            {
-                Console.WriteLine("Invalid ID.");
-            }
-
-            break;
-
-        case "6":
-            Console.Write("Enter patient ID: ");
-
-            if (int.TryParse(Console.ReadLine(), out int deleteId))
-            {
-                patientService.DeletePatient(patients, patientDictionary, deleteId);
-            }
-            else
-            {
-                Console.WriteLine("Invalid ID.");
-            }
-
-            break;
-
-        case "7":
-            running = false;
-            Console.WriteLine("Goodbye!");
-            break;
-        
-        case "8":
-            Console.WriteLine("Enter species: ");
-            string species = Console.ReadLine() ?? "";
-            
-            patientService.ShowPatientsBySpecies(patients, species);
-            
-            break;
-        
-        case "9":
-            patientService.RunPatientStatistics(patients);
-            
-            break;
-        
-        case "10":
-            if (patients.Count == 0)
-            {
-                Console.WriteLine("There are no patients.");
                 break;
-            }
 
-            Client firstClient = patients[0].Owner;
-            
-            firstClient.DisplayPatients();
-            break;
-        
-        case "11":
-            await clinicTaskService.ProcessPatientsConcurrentlyAsync(patients);
-            break;
+            case "2":
+                patientService.ListPatients(patients);
+                break;
 
-        default:
-            Console.WriteLine("Invalid option.");
-            break;
+            case "3":
+                string searchName = ConsoleUI.ReadRequiredString("Enter patient name");
+                patientService.FindPatientByName(patients, searchName);
+                break;
+
+            case "4":
+                int searchId = ConsoleUI.ReadInt("Enter patient ID");
+                patientService.FindPatientById(patientDictionary, searchId);
+                break;
+
+            case "5":
+                int updateId = ConsoleUI.ReadInt("Enter the ID of the patient to update");
+                patientService.UpdatePatient(patientDictionary, updateId);
+                Logger.LogInfo($"Patient with ID {updateId} updated successfully.");
+                break;
+
+            case "6":
+                int deleteId = ConsoleUI.ReadInt("Enter the ID of the patient to delete");
+                patientService.DeletePatient(patients, patientDictionary, deleteId);
+                Logger.LogInfo($"Patient with ID {deleteId} deleted successfully.");
+                break;
+
+            case "7":
+                string species = ConsoleUI.ReadRequiredString("Enter species");
+                patientService.ShowPatientsBySpecies(patients, species);
+                break;
+
+            case "8":
+                patientService.RunPatientStatistics(patients);
+                break;
+
+            case "9":
+                patientService.DemonstrateLinqQueries(patients);
+                break;
+
+            case "10":
+                int ownerLookupId = ConsoleUI.ReadInt("Enter the ID of one of the client's patients");
+
+                if (!patientDictionary.TryGetValue(ownerLookupId, out Patient? ownerLookupPatient))
+                {
+                    throw new PatientNotFoundException($"ID {ownerLookupId}");
+                }
+
+                ownerLookupPatient.Owner.DisplayInformation();
+                ownerLookupPatient.Owner.DisplayPatients();
+
+                break;
+
+            case "11":
+                await clinicTaskService.ProcessPatientsConcurrentlyAsync(patients);
+                break;
+
+            case "12":
+                await clinicTaskService.RunAllClinicProcessesAsync();
+                break;
+
+            case "13":
+                await clinicTaskService.RunFirstCompletedClinicProcessAsync();
+                break;
+
+            case "14":
+                await asyncDemoService.CompareExecutionModesAsync();
+                break;
+
+            case "15":
+                AttendVeterinaryService();
+                break;
+
+            default:
+                ConsoleUI.WriteWarning("Invalid option. Please choose a number from the menu.");
+                break;
+        }
     }
-    
-    // Just for Linq Consults
-    // patientService.RunLinqExamples(patients);
+    catch (InvalidPatientAgeException ex)
+    {
+        ConsoleUI.WriteError(ex.Message);
+        Logger.LogError(ex.Message);
+    }
+    catch (PatientNotFoundException ex)
+    {
+        ConsoleUI.WriteError(ex.Message);
+        Logger.LogError(ex.Message);
+    }
+    catch (Exception ex)
+    {
+        // A last-resort guard so an unforeseen error never crashes the menu loop; the full
+        // exception is logged for troubleshooting while the user only sees a friendly summary.
+        ConsoleUI.WriteError($"An unexpected error occurred: {ex.Message}");
+        Logger.LogError($"Unexpected error: {ex}");
+    }
+    finally
+    {
+        Console.WriteLine();
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        Console.WriteLine("  Press Enter to return to the menu...");
+        Console.ResetColor();
+        Console.ReadLine();
+    }
+}
+
+/// <summary>
+/// Prints the main menu, grouped by the kind of work each option performs.
+/// </summary>
+static void PrintMainMenu()
+{
+    ConsoleUI.WriteSectionTitle("Patient Records");
+    Console.WriteLine("   1. Register a new patient");
+    Console.WriteLine("   2. List all patients");
+    Console.WriteLine("   3. Find patient by name");
+    Console.WriteLine("   4. Find patient by ID");
+    Console.WriteLine("   5. Update patient information");
+    Console.WriteLine("   6. Delete patient");
+
+    ConsoleUI.WriteSectionTitle("Insights & Queries");
+    Console.WriteLine("   7. List patients by species");
+    Console.WriteLine("   8. View patient statistics");
+    Console.WriteLine("   9. Run LINQ demonstrations");
+    Console.WriteLine("  10. View a client's registered patients");
+
+    ConsoleUI.WriteSectionTitle("Asynchronous Operations");
+    Console.WriteLine("  11. Process all patients concurrently");
+    Console.WriteLine("  12. Run independent clinic processes (Task.WhenAll)");
+    Console.WriteLine("  13. Run independent clinic processes (Task.WhenAny)");
+    Console.WriteLine("  14. Compare synchronous vs asynchronous execution");
+
+    ConsoleUI.WriteSectionTitle("Veterinary Services");
+    Console.WriteLine("  15. Attend a veterinary service");
+
+    Console.WriteLine();
+    Console.WriteLine("   0. Exit");
+    Console.WriteLine();
+}
+
+/// <summary>
+/// Lets the user pick a veterinary service and attends it, demonstrating the abstract
+/// VeterinaryService hierarchy and the IAtendible interface through real polymorphic dispatch.
+/// </summary>
+static void AttendVeterinaryService()
+{
+    Console.WriteLine("   1. General consultation");
+    Console.WriteLine("   2. Vaccination");
+
+    Console.ForegroundColor = ConsoleColor.Gray;
+    Console.Write("Select a service: ");
+    Console.ResetColor();
+
+    string serviceOption = (Console.ReadLine() ?? string.Empty).Trim();
+
+    VeterinaryService? service = serviceOption switch
+    {
+        "1" => new GeneralConsultation(),
+        "2" => new Vaccination(),
+        _ => null
+    };
+
+    if (service is null)
+    {
+        ConsoleUI.WriteWarning("Invalid service option.");
+        return;
+    }
+
+    ConsoleUI.WriteInfo($"Attending: {service.Name}");
+    service.Attend();
 }

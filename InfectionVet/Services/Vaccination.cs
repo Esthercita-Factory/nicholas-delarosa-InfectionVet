@@ -1,4 +1,5 @@
-﻿using InfectionVet.Interfaces;
+using InfectionVet.Interfaces;
+using InfectionVet.Utilities;
 
 namespace InfectionVet.Services;
 
@@ -13,7 +14,6 @@ public class Vaccination : VeterinaryService, IAtendible
     public Vaccination()
         : base("Vaccination")
     {
-        
     }
 
     /// <summary>
@@ -21,6 +21,6 @@ public class Vaccination : VeterinaryService, IAtendible
     /// </summary>
     public override void Attend()
     {
-        Console.WriteLine("Performing a vaccination.");
+        ConsoleUI.WriteSuccess("Performing a vaccination.");
     }
 }

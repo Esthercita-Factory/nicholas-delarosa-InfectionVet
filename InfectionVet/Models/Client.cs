@@ -1,17 +1,21 @@
+using InfectionVet.Interfaces;
+using InfectionVet.Utilities;
+
 namespace InfectionVet.Models;
 
 /// <summary>
 /// Client represents the owner of one or more patients.
-/// Patients are the pets registered in the clinics, so Client does not inherit from Patient or Animal.
+/// Patients are the pets registered in the clinic, so Client does not inherit from Patient or Animal.
+/// It implements IRegistrable because an owner is also registered in the clinic's system, independently of their pets.
 /// </summary>
-public class Client
+public class Client : IRegistrable
 {
-    private string _phone;
-    
+    private string _phone = string.Empty;
+
     private readonly List<Patient> _patients = new();
-    
-    public int Id  { get; set; }
-    
+
+    public int Id { get; set; }
+
     public string Name { get; set; }
 
     /// <summary>
@@ -23,7 +27,7 @@ public class Client
         get => _phone;
         private set => _phone = value;
     }
-    
+
     public string Address { get; set; }
 
     /// <summary>
@@ -34,10 +38,10 @@ public class Client
     /// <summary>
     /// Initializes a new client with the required information.
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="name"></param>
-    /// <param name="phone"></param>
-    /// <param name="address"></param>
+    /// <param name="id">The client's ID.</param>
+    /// <param name="name">The client's name.</param>
+    /// <param name="phone">The client's phone number.</param>
+    /// <param name="address">The client's address.</param>
     public Client(
         int id,
         string name,
@@ -53,14 +57,25 @@ public class Client
     /// <summary>
     /// Adds a patient to this client's collection of patients.
     /// </summary>
-    /// <param name="patient"></param>
+    /// <param name="patient">The patient to add.</param>
     public void AddPatient(Patient patient)
     {
         _patients.Add(patient);
     }
 
     /// <summary>
-    /// Displays all patienst owned by this client
+    /// Removes a patient from this client's collection.
+    /// Kept in sync whenever a patient is deleted from the clinic, otherwise the owner would keep
+    /// referencing a pet that no longer exists.
+    /// </summary>
+    /// <param name="patient">The patient to remove.</param>
+    public void RemovePatient(Patient patient)
+    {
+        _patients.Remove(patient);
+    }
+
+    /// <summary>
+    /// Displays all patients owned by this client.
     /// </summary>
     public void DisplayPatients()
     {
@@ -79,7 +94,7 @@ public class Client
     }
 
     /// <summary>
-    /// Display the client's information in the console.
+    /// Displays the client's information in the console.
     /// </summary>
     public void DisplayInformation()
     {
@@ -87,5 +102,13 @@ public class Client
 Name: {Name}
 Phone: {Phone}
 Address: {Address}");
+    }
+
+    /// <summary>
+    /// Registers the client as an owner in the clinic's system.
+    /// </summary>
+    public void Register()
+    {
+        ConsoleUI.WriteSuccess($"Client {Name} registered successfully.");
     }
 }
